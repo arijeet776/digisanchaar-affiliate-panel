@@ -1,0 +1,40 @@
+# Place: <netlify base directory>/netlify.toml (base directory = frontend). Publish dir is relative to it.
+# Netlify: static React (Vite) frontend ONLY. The FastAPI backend is hosted separately.
+[build]
+  command = "node scripts/check-env.mjs && npm install --no-audit --no-fund && npm run build"  # no package-lock.json in the repo: commit one after the first install, then switch to "npm ci"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # Set VITE_API_BASE_URL in the Netlify UI (Site settings -> Environment variables) to the
+  # PUBLIC https URL of the separately hosted backend, e.g. https://api.example.com/api/v1
+  # This is a public value baked into the bundle - never put any secret in a VITE_* variable.
+
+# Missing hashed assets must 404 (never be answered with index.html, which breaks the module loader / looks like a white screen).
+[[redirects]]
+  from   = "/assets/*"
+  to     = "/assets/:splat"
+  status = 404
+
+# Single-page-app fallback: deep links (/publisher/reports?tab=clicks) must serve index.html.
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "no-referrer"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"

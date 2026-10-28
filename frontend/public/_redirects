@@ -1,0 +1,3 @@
+# SPA fallback (files that exist are served as-is; unknown assets 404 instead of returning HTML)
+/assets/*  /assets/:splat  404
+/*         /index.html     200

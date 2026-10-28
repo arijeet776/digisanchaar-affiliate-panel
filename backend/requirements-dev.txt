@@ -1,0 +1,6 @@
+# Test-only — not needed to run the app
+mongomock-motor==0.0.36
+httpx==0.28.1
+# Visual QA tooling only (backend/visual_qa_*.py) — not needed for tests/smoke_test.py
+playwright==1.56.0
+Pillow

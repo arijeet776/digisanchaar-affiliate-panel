@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/quantix-logo-mark.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <title>DigiSanchaar</title>
+    <script>
+      // Applied before the app renders, to avoid a flash of the wrong theme.
+      // User's explicit choice (localStorage) always wins; otherwise default
+      // to the dark experience (the primary DigiSanchaar visual language).
+      (function () {
+        var stored = localStorage.getItem("qx-theme");
+        var theme = stored === "light" || stored === "dark" ? stored : "dark";
+        document.documentElement.setAttribute("data-theme", theme);
+        // Global accent: cached server value for first paint; default Deep Yellow.
+        var accents = ["deep-yellow", "deep-sky", "deep-orange", "hasmind-purple"];
+        var a = null;
+        try { a = localStorage.getItem("qx-accent"); } catch (e) {}
+        document.documentElement.setAttribute("data-accent", accents.indexOf(a) >= 0 ? a : "deep-yellow");
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
